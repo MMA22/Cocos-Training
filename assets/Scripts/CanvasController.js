@@ -10,80 +10,42 @@ cc.Class({
     extends: cc.Component,
 
      properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
-        btnSave: {
-            type: cc.Button, // 
-            default: null,
-        },
-        btnLoad: {
-            type: cc.Button, // 
-            default: null,
-        },
-        btnPlant: {
-            type: cc.Button, // 
-            default: null,
-        },
-        btnMove: {
-            type: cc.Button, // 
-            default: null,
-        },
-        btnDelete: {
-            type: cc.Button, // 
-            default: null,
-        },
-        btnChangeType: {
-            type: cc.Button, // 
-            default: null,
-        },       
-        gameContorller: {            
-            type: cc.Node,
-            default: null,
-        }, 
+         btnSave: cc.Button,                
+        btnLoad: cc.Button,
+        btnPlant: cc.Button,
+        btnMove: cc.Button,
+        btnDelete: cc.Button,
+        btnChangeType: cc.Button,     
+        state: 'NoState',
     },
 
 
       // LIFE-CYCLE CALLBACKS:
     onLoad () {
-        this.node.on(cc.Node.EventType.MOUSE_DOWN, this.plantTree, event); 
+        // this.btnPlant.node.on(cc.Node.EventType.MOUSE_DOWN,function (event){
+        //     console.log('plant');
+        //     state = 'plant'     
+        // },this)
+        // this.btnMove.node.on(cc.Node.EventType.MOUSE_DOWN,function (event){
+        //     state = 'move'; 
+        //     console.log('move');
+        // },this)
+        // this.btnDelete.node.on(cc.Node.EventType.MOUSE_DOWN,function (event){
+        //     state = 'delete'; 
+        //     console.log('delete');
+        // },this)
+        // this.btnChangeType.node.on(cc.Node.EventType.MOUSE_DOWN,function (event){
+        //     state = 'changeType';
+        //     console.log('type'); 
+        // },this)
     },
 
-    start () {
-        
+    start () {        
     },
+   
 
-    OnClickPlantBtn : function () {        
-        gameContorller.state = GameContorller.state.Plant;
-        console.log("State info " + gameContorller.state);     
+    update (dt) {        
     },
-
-    OnClickMoveBtn : function() {
-        gameContorller.state = GameContorller.state.Move;
-    },
-
-    OnClickDeleteBtn : function() {
-        gameContorller.state = GameContorller.state.Delete;
-    },
-
-    update (dt) {
-        
-    },
-    plantTree(e) {
-        gameContorller.plantTree(e);
-        
-    },
+   
 
 });
