@@ -3,6 +3,7 @@ var isMove = true;
 var count = 0;
 var isbuttonClick = false;
 var treeType = 1;
+var target = null;
 
 cc.Class({
     extends: cc.Component,
@@ -14,6 +15,7 @@ cc.Class({
         btnTypeChange: cc.Button,
         btnSave: cc.Button,
         btnLoad: cc.Button,
+        lblInfo: cc.Label,
         tree1: cc.Prefab,
         tree2: cc.Prefab,
     },
@@ -31,26 +33,28 @@ cc.Class({
    
         this.btnPlant.node.on(cc.Node.EventType.MOUSE_DOWN,function (event){           
             state = 'plant';  
-            isbuttonClick = true;   
-            console.log('plant');
+            isbuttonClick = true;             
+            this.lblInfo.string = 'Plant';
         },this)
         this.btnMove.node.on(cc.Node.EventType.MOUSE_DOWN,function (event){
             state = 'move'; 
-            console.log('move');            
+            this.lblInfo.string = 'Move';            
         },this)
         this.btnDelete.node.on(cc.Node.EventType.MOUSE_DOWN,function (event){
             state = 'delete'; 
-            console.log('delete');
+            this.lblInfo.string = 'Delete';
         },this)
         this.btnTypeChange.node.on(cc.Node.EventType.MOUSE_DOWN,function (event){
             state = 'plant';
             if (treeType === 1) {
                 treeType = 2;
+                this.lblInfo.string = 'Tree Type 2'; 
             } else {
                 treeType = 1;
+                this.lblInfo.string = 'Tree Type 1'; 
             }
             isbuttonClick = true; 
-            console.log('type'); 
+            
         },this)
         this.node.on("mousedown", this.onClickMouseLeftButton, this);    
      },
@@ -72,40 +76,45 @@ cc.Class({
         if (state === 'plant') {        
             var newTree = null;
             if (treeType === 1) {
-                newTree = cc.instantiate(this.tree1);
+                newTree = cc.instantiate(this.tree1);                
             }  else {
-                newTree = cc.instantiate(this.tree2);
+                newTree = cc.instantiate(this.tree2);                
             }            
             let mousePosition = event.getLocation();
             mousePosition = this.node.convertToNodeSpaceAR(mousePosition);
             newTree.setPosition(cc.v2(mousePosition.x, mousePosition.y));
-            var count = count + 1;
-            newTree.name = "Tree" + count.toString();
+            count ++;
+            newTree.name = "Tree" + count.toString();            
             newTree.on("mousedown", this.onClickTreeMouseDown, this, newTree);
             newTree.on("mousemove", this.onClickTreeMouseMove, this);
             newTree.on(cc.Node.EventType.MOUSE_UP, (event)=>{
-            isMove = false;
+                if (state === 'move') {
+                    this.lblInfo.string = 'Move'    
+                    isMove = false;
+                }                
             });
-            this.node.addChild(newTree);
-            console.log(mousePosition);            
+            this.lblInfo.string = 'Plant ' + newTree.name;
+            this.node.addChild(newTree);                        
          }
      },
 
      onClickTreeMouseDown(event) {
-        if (state === 'delete') {  
-            var target = event.target;
+        target = event.target;
+        if (state === 'delete') {
+            this.lblInfo.string = 'Delete ' + target.name;
             target.destroy();
         } 
         if (state === 'move') {
             isMove = true;
+            this.lblInfo.string = 'Move ' + target.name;
         }
      },
 
      onClickTreeMouseMove(event) {
         if( state === 'move' && isMove) {
             let mousePosition = event.getLocation();
-            mousePosition = this.node.convertToNodeSpaceAR(mousePosition);
-            var target = event.target;
+            mousePosition = this.node.convertToNodeSpaceAR(mousePosition); 
+                       
             target.setPosition(cc.v2(mousePosition.x, mousePosition.y));
         }      
      },
